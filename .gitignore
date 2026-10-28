@@ -1,0 +1,8 @@
+# skill packages are published from the folder, not from a zip in the repo
+*.zip
+
+# local scratch
+.tmp/
+node_modules/
+.DS_Store
+Thumbs.db
