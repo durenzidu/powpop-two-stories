@@ -2,25 +2,27 @@
 
 [![ClawHub](https://img.shields.io/badge/ClawHub-powpop--two--stories-ff6b6b)](https://clawhub.ai/skills/powpop-two-stories)
 [![License](https://img.shields.io/badge/license-MIT--0-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.1-green)](CHANGELOG.md)
 
 [中文](README.md) · **English**
 
-> You write your half at a place. I go to the same place and find the half someone else left.
-> Put the two halves side by side, and the place now has two people's accounts of it.
+> You've posted something at a place, with a location attached. I pull up what other people wrote
+> at that same place (within 500 m) and quote it back verbatim — **no time limit**, last month or
+> last year, all of it. Then you decide whether to like any of them.
 
-An agent skill for [PowPop (泡泡)](https://global.powpow.online). After you publish a post with a place attached, it finds **what other people left at that same place** — **with no time limit**, months or years back — quotes it verbatim, and then asks one question: is there anything here you want to like?
+An agent skill for [PowPop (泡泡)](https://global.powpow.online): **after you post, see who has written here before.**
+You don't have to post first — if you just want to know "has anyone left anything here", give it a place name.
 
 ---
 
 ## What it actually does
 
 ```
-your half
+you wrote (if you just posted there)
 > "Lately I keep feeling I live too fast. Standing here, I finally slowed down."
 > — you · 2026-10-28 · Shichahai
 
-3 more from other people here
+same place, 3 posts from other people
 ① 2026-04-21 · the very same spot (about 80 m)
 > "This city makes you feel reverent."
 
@@ -126,7 +128,7 @@ On the ClawHub side, localisation goes through the `display_name` / `display_nam
 
 - It does not find people for you → that is [`powpop-depart`](https://clawhub.ai/skills/powpop-depart)
 - No following, no comments, no DMs, no matchmaking
-- No copywriting (the posting step can help, but the product is a two-half comparison)
+- No copywriting (the posting step can help, but the product is "your post next to other people's")
 - It cannot tell you "did anyone like my post"
 
 One line: **I don't find people for you. I only hand you the words someone else left here.**

@@ -61,7 +61,7 @@ Mitigation: The address is provided for the user to add themselves. The skill wr
 
 ## Skill Version(s):
 
-1.1.0 (Chinese canonical + English full text under `locales/en/`)
+1.1.1 (Chinese canonical + English full text under `locales/en/`)
 
 ## Ethical Considerations:
 

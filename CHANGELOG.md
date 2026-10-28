@@ -3,6 +3,27 @@
 All notable changes to this skill are documented here. The version here must match `version:` in
 `skills/powpop-two-stories/SKILL.md` and in every file under `locales/`.
 
+## 1.1.1 — 2026-10-28
+
+Copy fix. The opening pitch was a metaphor ("写下你的那一半 … 两半放在一起") that readers could not
+map onto anything the skill actually does. Replaced with a literal three-step description, in both
+languages.
+
+**Changed**
+
+- `SKILL.md` / `locales/en/SKILL.md`, "这个玩法 / How it works": now opens with one sentence
+  ("你在某个地方发过帖子，我帮你看看同一块地方上，别人以前写过什么") plus the three steps —
+  give a place, search 500 m with no time limit, quote verbatim with date and distance, then ask
+  about liking. The "I find no people, I only hand over words" boundary stays at the end.
+- The metaphor "那一半 / 两半" is gone everywhere it leaked: section 1 heading, the 1.1 table,
+  the 3.1 output sample, the length-priority rationale, section 6's honest-numbers line, and the
+  section 7 boundary table.
+- `README.md` / `README.en.md`: same rewrite for the tagline and the sample output; added one
+  line so it is obvious that posting first is optional.
+- `description_zh` reworded to match (this is the field ClawHub shows as the listing summary).
+
+No behaviour change: thresholds, caps, tool calls, and all 18 hard rules are identical to 1.1.0.
+
 ## 1.1.0 — 2026-10-28
 
 Multilingual release, and the skill now lives in its own repository.

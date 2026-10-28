@@ -2,25 +2,26 @@
 
 [![ClawHub](https://img.shields.io/badge/ClawHub-powpop--two--stories-ff6b6b)](https://clawhub.ai/skills/powpop-two-stories)
 [![License](https://img.shields.io/badge/license-MIT--0-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.1-green)](CHANGELOG.md)
 
 **中文** · [English](README.en.md)
 
-> 你在一个地方写下你的那一半。我去同一个地方，把别人留下的那一半找出来。
-> 两半放在一起，这个地方就有了两个人的说法。
+> 你在某个地方发过一条带定位的帖子。我把同一块地方（500 米内）别人写过的帖子翻出来，
+> 原文贴给你，**不限时间**——上个月的、去年的都算。看完你决定，要不要给其中几条点个赞。
 
-一个给 [PowPop（泡泡）](https://global.powpow.online) 用的 agent skill。发一条带地点的帖子之后，它把**同一地点上别人留下的文字**找出来——**不限时间**，几个月前的、去年的都算——原文端给你，再问一句：这几段里，有你想点赞的吗。
+一个给 [PowPop（泡泡）](https://global.powpow.online) 用的 agent skill：**发帖之后，看看这地方以前有谁写过什么。**
+不在 PowPop 上发帖也能用——只想知道「这地方有人留过东西吗」，直接给个地名就行。
 
 ---
 
 ## 它到底做什么
 
 ```
-你说的那半句
+你写的（如果你刚在那儿发过帖）
 > 「最近总觉得自己活得太赶，站在这儿才慢下来。」
 > —— 你 · 2026-10-28 · 什刹海
 
-这儿还有 3 段别人的
+同一地点，别人写过的 3 条
 ① 2026-04-21 · 就在同一个点上（约 80 米）
 > 「这座城市，让人心生敬意」
 
@@ -126,7 +127,7 @@ ClawHub 侧的多语言走 frontmatter 的 `display_name` / `display_name_en` / 
 
 - 不替你找人 → 那是 [`powpop-depart`](https://clawhub.ai/skills/powpop-depart)
 - 不关注、不评论、不私信、不撮合
-- 不给你写文案（发帖那步可以帮，但产出是两半对照）
+- 不给你写文案（发帖那步可以帮，但产出是"把你那条和别人那几条并排给你看"）
 - 拿不到「有人给我点赞了吗」
 
 一句话：**我不替你找人，我只把别人留在这儿的字，递到你眼前。**

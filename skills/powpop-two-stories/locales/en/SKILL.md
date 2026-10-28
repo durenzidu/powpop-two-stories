@@ -3,10 +3,10 @@ name: powpop-two-stories
 display_name: One View, Two Stories
 display_name_en: One View, Two Stories
 description: 'After you publish a post at a place, find the words other people left at the same place — any date, months or years old — quote them verbatim, and ask one question: is there anything here you want to like. Triggers when the user says "I posted at X", "has anyone left anything here", or "one view, two stories". The place is decided by distance (within 500 m counts as the same place), not by whether the name was typed the same way; there is never a time filter; the same sentence seeded across several locations is collapsed to one. **Requires the PowPop MCP server (https://global.powpow.online/api/mcp); never pretend to run without it.**'
-description_zh: 发一条带地点的帖子之后，把同一地点（500 米内、不限时间）别人留下的文字原文找出来，两半并排给你看，再问你要不要给这些帖子点赞；必须连接 PowPop MCP 才能使用。
+description_zh: 发一条带地点的帖子之后，把同一地点（500 米内、不限时间）别人留下的文字原文找出来，把你那条和别人那几条并排给你看，再问你要不要给这些帖子点赞；必须连接 PowPop MCP 才能使用。
 description_en: After you post at a place, find what other people left at the same place — any date, no time filter — show their words verbatim next to yours, then ask whether you want to like them. Requires the PowPop MCP server.
 category: Social & Journaling
-version: 1.1.0
+version: 1.1.1
 author: durenzidu
 language: en
 canonical: ../../SKILL.md
@@ -18,15 +18,19 @@ canonical: ../../SKILL.md
 
 ## How it works (explain on the first run, once)
 
-You stand somewhere, you see something, and you write down your half: **one post, with a place attached**.
+**In one line: you've posted something at a place — I'll show you what other people wrote at that same place before.**
 
-I go and look for the other half that someone else left at that same place, **with no time limit** — last month, last year, all of it counts. When I find it, I hand it to you verbatim, not one character changed.
+Three steps:
 
-Put the two halves side by side and the place now has two people's accounts of it. Then I ask you one question: **is there anything here you want to nod to?**
+1. **You give me a place** — or, if you just posted there with a location attached, we use that.
+2. **I search other people's posts within 500 m of it**, with **no time limit**: last month, last year, two years ago, all of it. How many you get depends on whether anyone has written there — a busy spot gives you a dozen or two, a quiet one often gives nothing at all.
+3. **I quote them back to you verbatim**, not one character changed, each with its date and how far it is from you. Then you decide whether to like any of them.
+
+That's all three steps, and nothing else happens. I don't find people for you, don't DM, don't comment; **a like is the only thing in this flow that actually reaches another person.**
 
 **Set the terms first, so nobody misunderstands:**
 
-- When I say "other people" I mean **another piece of text left here**. This platform gives no reliable identity, so I do not name anyone, I do not say "a certain user", and I cannot promise that text was written by a traveller like you.
+- When I say "other people" I mean **another post left at the same place**. This platform gives no reliable identity, so I do not name anyone, I do not say "a certain user", and I cannot promise that post was written by a traveller like you.
 - I will not put you in touch with anyone. The **only outward action** in this whole flow is a like, and whether it happens is your call.
 
 ---
@@ -60,15 +64,15 @@ Tools this depends on (if one is missing, the MCP version is wrong — stop and 
 
 ---
 
-## 1. Get "your half" and the place
+## 1. Confirm the place (and the post you're comparing against)
 
 ### 1.1 Three entry points — fill in whatever is missing
 
 | The user's situation | What I do |
 |---|---|
 | **A · wants to post something new** (gave text or photos + a place) | `prepare_post` → show the draft as-is → explicit yes → `publish_post` → go to section 2 |
-| **B · already posted** ("I just posted", "I posted one at X") | Don't ask for the content, just the place. If they gave a `post_id` or link, read it back with `get_post_detail` as "your half"; if not, leave it empty |
-| **C · just passing through, no post** ("has anyone left anything here") | Go straight to section 2, leave "your half" empty, and say at the end that this time there is only one half |
+| **B · already posted** ("I just posted", "I posted one at X") | Don't ask for the content, just the place. If they gave a `post_id` or link, read it back with `get_post_detail` and treat it as "the one you wrote"; if not, leave it empty |
+| **C · just passing through, no post** ("has anyone left anything here") | Go straight to section 2, with no "the one you wrote", and say at the end that this time there are only other people's |
 
 **Ask for one thing only: the place.** If the user says "near me", make them name the city / district / landmark — `find_nearby` takes a place name, not coordinates, and I will not guess one.
 
@@ -128,7 +132,7 @@ After de-duplication, select in this fixed order:
 2. Add **1 that is the earliest** (skip if already included);
 3. Always present in **`created_at` ascending order** — oldest first.
 
-**Length means plain-text length** (counted after stripping tags, see 2.5). **Why length first**: this platform is full of one-line posts; lead with the ones that have something in them, and only then does it read like two people talking.
+**Length means plain-text length** (counted after stripping tags, see 2.5). **Why length first**: this platform is full of one-line posts; lead with the ones that have something in them, and only then is it obvious that *more than one person* has written here.
 
 ### 2.5 Fetch the full text: never read HTML tags aloud
 
@@ -150,16 +154,16 @@ Quote that directly and the user sees a pile of `<p>` and `<img src=…>`. So:
 
 ---
 
-## 3. Presentation (two halves side by side — this is the whole product)
+## 3. Put both sides side by side (this is the whole product)
 
 ### 3.1 Format
 
 ```
-your half
-> "(the user's post, verbatim)"
+you wrote (if you just posted there)
+> "(your own post, verbatim)"
 > — you · 2026-10-28 · Shichahai
 
-3 more from other people here
+same place, 3 posts from other people
 ① 2026-04-21 · the very same spot (about 80 m)
 > "…"
 
@@ -259,7 +263,7 @@ your half
 
 **What does not exist** (say so plainly when asked, don't dodge): reading like counts / who liked me, writing comments, DMs, any notifications, reliable identity checks.
 
-So explain it on first use: **a handful of busy places can assemble "two people's accounts of it"; a quiet place is just you, plus an empty street.** That is not the product being broken — it is a place where nobody has written yet.
+So explain it on first use: **a few busy places will hand you a dozen or twenty posts; a quiet place is just your own, plus an empty street.** That is not the product being broken — it is a place where nobody has written yet.
 
 ---
 
@@ -278,7 +282,7 @@ So explain it on first use: **a handful of busy places can assemble "two people'
 |---|---|
 | "Find me someone to set off with" | Not here — that is `powpop-depart` (Solo out. Together in.) |
 | "What's worth seeing around here" | Not here — that is attraction advice (`nearby_attractions`) |
-| "Write a post for me to publish" | The posting step can help, but this skill's product is a two-half comparison, not a copywriting service |
+| "Write a post for me to publish" | The posting step can help, but this skill's product is "your post next to other people's", not a copywriting service |
 | "Did anyone like my post" | Not possible: no who-liked-me, no notifications |
 
 One-line boundary: **I don't find people for you. I only hand you the words someone else left here.**
