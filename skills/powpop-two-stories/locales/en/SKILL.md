@@ -2,11 +2,11 @@
 name: powpop-two-stories
 display_name: One View, Two Stories
 display_name_en: One View, Two Stories
-description: 'After you publish a post at a place, find the words other people left at the same place — any date, months or years old — quote them verbatim, and ask one question: is there anything here you want to like. Triggers when the user says "I posted at X", "has anyone left anything here", or "one view, two stories". The place is decided by distance (within 500 m counts as the same place), not by whether the name was typed the same way; there is never a time filter; the same sentence seeded across several locations is collapsed to one. **Requires the PowPop MCP server (https://global.powpow.online/api/mcp); never pretend to run without it.**'
-description_zh: 发一条带地点的帖子之后，把同一地点（500 米内、不限时间）别人留下的文字原文找出来，把你那条和别人那几条并排给你看，再问你要不要给这些帖子点赞；必须连接 PowPop MCP 才能使用。
-description_en: After you post at a place, find what other people left at the same place — any date, no time filter — show their words verbatim next to yours, then ask whether you want to like them. Requires the PowPop MCP server.
+description: 'After you publish a post at a place, find the words other people left at the same place — any date, months or years old — quote them verbatim, point out which one reads most like your own writing (text only, never guessing at people), and ask one question: is there anything here you want to like. Triggers when the user says "I posted at X", "has anyone left anything here", "is there anyone here like me", or "one view, two stories". The place is decided by distance (within 500 m counts as the same place), not by whether the name was typed the same way; there is never a time filter; the same sentence seeded across several locations is collapsed to one. **Requires the PowPop MCP server (https://global.powpow.online/api/mcp); never pretend to run without it.**'
+description_zh: 发一条带地点的帖子之后，把同一地点（500 米内、不限时间）别人写过的帖子原文找出来，并指出哪一条跟你写得最像（只比文字、不猜人），再问要不要点赞；必须连接 PowPop MCP 才能使用。
+description_en: After you post at a place, find what other people wrote there — any date, no time filter — quote it verbatim, point out which one reads most like your own writing (text only, no guessing about people), then ask whether you want to like them. Requires the PowPop MCP server.
 category: Social & Journaling
-version: 1.1.1
+version: 1.2.0
 author: durenzidu
 language: en
 canonical: ../../SKILL.md
@@ -18,15 +18,18 @@ canonical: ../../SKILL.md
 
 ## How it works (explain on the first run, once)
 
-**In one line: you've posted something at a place — I'll show you what other people wrote at that same place before.**
+**In one line: you've posted something at a place — I'll show you what other people wrote at that same place before, and point out which one reads most like you.**
 
-Three steps:
+Three steps of reading, one of choosing:
 
 1. **You give me a place** — or, if you just posted there with a location attached, we use that.
 2. **I search other people's posts within 500 m of it**, with **no time limit**: last month, last year, two years ago, all of it. How many you get depends on whether anyone has written there — a busy spot gives you a dozen or two, a quiet one often gives nothing at all.
-3. **I quote them back to you verbatim**, not one character changed, each with its date and how far it is from you. Then you decide whether to like any of them.
+3. **I quote them back to you verbatim**, not one character changed, each with its date and how far it is from you.
+4. **Then I tell you which of those reads most like yours** — comparing only the text: what it's about, where the feeling lands, whether the writer is present, whether it looks at now or back then, and how it's said. **I don't guess who wrote it.**
 
-That's all three steps, and nothing else happens. I don't find people for you, don't DM, don't comment; **a like is the only thing in this flow that actually reaches another person.**
+Then you decide whether to like any of them.
+
+That's the whole flow, nothing else happens. I don't find people for you, don't DM, don't comment; **a like is the only thing in this flow that actually reaches another person.**
 
 **Set the terms first, so nobody misunderstands:**
 
@@ -87,13 +90,13 @@ Tools this depends on (if one is missing, the MCP version is wrong — stop and 
 ### 1.3 Posting (entry point A only)
 
 - Write the body as the user said it. **Do not add anything of your own**: no "looking for a chance encounter", no "anyone want to join" — this skill does not find people.
-- `place` is **required**. A post with no place never reaches the map, and then this whole flow does not exist; if the user insists on no place, say plainly "then I can't find the other half at the same place for this one".
+- `place` is **required**. A post with no place never reaches the map, and then this whole flow does not exist; if the user insists on no place, say plainly "then I can't search for anyone else at that same place for this one".
 - At most 3 images. If the user sent images in the conversation, attach those, **never invent a URL**.
 - **Two steps, never merged**: show the draft → user explicitly says "post" → `publish_post(draft_id)`. Drafts expire after one hour; re-run `prepare_post` if it timed out.
 
 ---
 
-## 2. Find the other half at the same place
+## 2. Search other people's posts at the same place
 
 ### 2.1 One iron rule: distance decides the place, not whether the names match
 
@@ -198,20 +201,69 @@ same place, 3 posts from other people
 
 ---
 
-## 4. One question: want to like any of these? (the point of the whole flow)
+## 4. Who here sounds most like you ("合拍")
 
-### 4.1 Fixed wording
+Once the rows are on screen, if **you wrote something too**, do this: **start from your own post, find the one row of the 5 that reads most like yours, and name only that one.**
+
+### 4.1 What to compare: five dimensions, fixed, no free-styling
+
+| Dimension | Look at |
+|---|---|
+| **Subject** | What it is about: buildings / water / light / people / animals / one small object |
+| **Where the feeling lands** | Calm / nostalgia / self-mockery / delight / weariness / reverence / can't tell |
+| **Is the writer present** | An "I" inside it (I saw, I felt), or just noting from the side (here, it) |
+| **Time** | Only now / looking back / looking ahead |
+| **How it's said** | Long sentences building up / one flat conclusion / all concrete detail / all abstract feeling |
+
+Go through them one by one. **"Sounds like you" = at least three of these five line up** — not who writes better, not who wrote more.
+
+### 4.2 How to say it: fixed shape, quote both sides
+
+> The one that reads most like yours is ②.
+> You wrote "standing here, I finally slowed down"; they wrote "someone else was sitting here today too, didn't say a word" —
+> both are "I'm here, and I've slowed down", both stop at the moment the body stops, neither describes the view.
+> Where they differ: you wrote your own state, they only said "someone" and kept themselves hidden.
+
+- **Quote one line from each side.** That is the evidence and it cannot be skipped — "it feels really similar" with no quote is fabrication.
+- **Always add one "where they differ" line.** Only listing similarities is flattery.
+- **No scores, no percentages.** "87% compatible" is false precision.
+- **Name one only.** If the user asks "what else", then give a second — never hand over a ranking.
+- **If the closest row is long-form / a listicle / marketing copy** (history explainers, "8 routes I love ✨🔥", anything that reads like a WeChat article), you must add: "this one reads like an edited piece, not something jotted down" — **same genre is not the same person**. 20% of all posts are 300+ characters, and a good share of those are this kind of copy.
+
+### 4.3 When not to do it
+
+| Situation | What to say |
+|---|---|
+| **Only 1 post from someone else** | "There's only one — nothing to compare against." Don't force it |
+| **You didn't post anything** | Ask once: "Want to give me one line about how it felt standing there? With your line, I can actually compare." **Only analyse if they answer**; if not, skip it and say "without your line there's nothing to be in tune with" |
+| **All 5 are one-liners** | "The words here are all too short — enough to match a mood, not a person" |
+| **Nothing lines up on three of the five** | "None of these 5 reads like you." **Never manufacture a match** |
+
+### 4.4 Pin this down
+
+**This is text resembling text, not one person connecting with another.**
+
+I don't know who wrote that post, how old they are, or what they do. So: never say "you two would get along", never say "they'd like…", never guess their motives, never hang a personality label on them — and **never follow, DM, or like anyone because of it**. Liking always goes through section 5 and a separate question.
+
+**The one thing you may state**: if the closest row and some of the others come from **the same account**, say so — "these come from the same account". That is still a fact, not a judgement.
+
+---
+
+## 5. One question: want to like any of these? (the closing action)
+
+### 5.1 Fixed wording
 
 > Is there anything here you want to nod to?
 > You can **like all of them**, **pick a few** (by number), or **like none**.
 > Liking does not notify the other person — but it is the one bit of motion here that can be handed over to someone.
 > (One caveat: liking an already-expired bubble extends it for 24 hours.)
 
-### 4.2 Execution discipline
+### 5.2 Execution discipline
 
 - **Ask first, and get an explicit answer.** "Whatever", "up to you", "either way" **does not count as consent** — ask once more: "all of them, or just number 2?"
 - **Like only the rows you already presented.** Never widen to "other posts at the same place".
 - **Never like your own post.**
+- **You may fold the closest row into the question**: "② is the one that reads most like yours — like that one too?" — **one clause only, never click it for them.**
 - Call `like_post(post_id)` row by row and report the result honestly:
   - Normal → "Liked — now N likes"
   - `already` → "You had already liked this one" (**not** "liked")
@@ -224,7 +276,7 @@ same place, 3 posts from other people
 
 ---
 
-## 5. Hard rules (violating one is an implementation bug)
+## 6. Hard rules (violating one is an implementation bug)
 
 1. **MCP must be connected first**; if it isn't, say so plainly. No simulation.
 2. **Never filter by time.** No "last 30 days", no "past month" — "regardless of date" is the definition of this play, not an option.
@@ -244,10 +296,13 @@ same place, 3 posts from other people
 16. **Never read HTML tags to the user.** Always go through `get_post_detail` (server-stripped); the fallback is stripping every `<...>` yourself. Seeing `<p>`, `<img`, or `data-type=` in your output is an implementation bug.
 17. **Count length on plain text**, never sort by raw length including tags.
 18. **Flag author clustering**: when 3+ of 5 rows share one `author_id`, say so; never let it read like several people.
+19. **The "closest to you" pick stays inside the rows already presented** — no going back to search more, no ranking table, one row at a time.
+20. **It must quote one line from each side** as evidence and **must include one "where they differ"**; **no scores, percentages, or match ratings**.
+21. **It is text compared to text, not person to person**: never infer the author's identity, age, gender, job, motives, or personality; never say "you two would get along" or "they'd like…"; **never follow, DM, or like anyone because of it**.
 
 ---
 
-## 6. The honest numbers (say them on first use, then not again)
+## 7. The honest numbers (say them on first use, then not again)
 
 | Fact | Number |
 |---|---|
@@ -255,6 +310,7 @@ same place, 3 posts from other people
 | Distinct place names | **273**, of which **97** have ≥2 posts |
 | One busy place (within 500 m, after de-duplication) | **5–21 rows**: Shichahai highest (21), Guomao 13, Wangfujing / the Bund around 10, Zhongguancun / Xidan / Nanjing Road / Lujiazui 7–9 |
 | Posts whose body is byte-identical | **23%** (one sentence seeded at several locations) |
+| Long-form (300+ characters) | **20%** (132 posts), many of them guides, event lists, seasonal essays — they read like articles, not like one person talking |
 | Bodies are rich text | All of them. `<p>` / `<span data-type="location">` / `<img>` are all in there; strip them and it becomes human speech |
 | Body cap per post | The detail endpoint gives up to 4000 characters, flagged "truncated" beyond that |
 | One account dominating a place | **Common**: all 8 posts at Wudaoying from one account; 6 of 6 at the Forbidden City turret from one account |
@@ -267,12 +323,13 @@ So explain it on first use: **a few busy places will hand you a dozen or twenty 
 
 ---
 
-## 7. When to use this, when not to
+## 8. When to use this, when not to
 
 **Use it** (hear these, come in):
 
 - "I posted something at Shichahai — has anyone else left anything here?"
 - "I just posted at Guomao, want to see what others wrote"
+- "Is there anyone here like me", "who here sounds most like me"
 - "One view, two stories"
 - "Has anyone left something here", "help me find other people's posts about this place"
 
@@ -283,6 +340,7 @@ So explain it on first use: **a few busy places will hand you a dozen or twenty 
 | "Find me someone to set off with" | Not here — that is `powpop-depart` (Solo out. Together in.) |
 | "What's worth seeing around here" | Not here — that is attraction advice (`nearby_attractions`) |
 | "Write a post for me to publish" | The posting step can help, but this skill's product is "your post next to other people's", not a copywriting service |
+| "Find me friends / someone like me" | **Text only**: it can point at the post that reads most like yours. That is not knowing the person — no following, no DMs, no matchmaking; contact stays entirely in your own hands in the app |
 | "Did anyone like my post" | Not possible: no who-liked-me, no notifications |
 
 One-line boundary: **I don't find people for you. I only hand you the words someone else left here.**

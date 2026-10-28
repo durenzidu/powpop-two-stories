@@ -2,7 +2,7 @@
 
 [![ClawHub](https://img.shields.io/badge/ClawHub-powpop--two--stories-ff6b6b)](https://clawhub.ai/skills/powpop-two-stories)
 [![License](https://img.shields.io/badge/license-MIT--0-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.1-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-green)](CHANGELOG.md)
 
 **中文** · [English](README.en.md)
 
@@ -31,6 +31,11 @@
 ③ 2026-09-18 · 稍远一点（约 640 米）
 > 「今天也有人在这儿坐着，一句话都没说。」
 ```
+
+贴完，我会指一条：**「这几条里，② 跟你最像」**——两边各引一句原文当依据，再说一句哪里不一样。
+
+比的是文字，五个维度：写的是什么、情绪落在哪、人在不在场、看的是此刻还是从前、怎么说话。至少三样对上才算像。
+**不猜作者是谁、多大、做什么；不给"契合度 87%"这种分数；也不因为像就去关注或私信。**
 
 然后只有一句问题：
 

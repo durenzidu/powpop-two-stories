@@ -45,13 +45,13 @@ function parseFrontmatter(text) {
   return { fm, body: text.slice(m[0].length) };
 }
 
-/** Count numbered hard rules in section "## 5" / "## 五". */
+/** Count numbered hard rules inside the "硬规则 / Hard rules" section (heading number may shift). */
 function countRules(body) {
-  const start = body.search(/^##\s+(5\.|五)/m);
-  if (start === -1) return -1;
-  const rest = body.slice(start);
-  const end = rest.slice(1).search(/^##\s+(6\.|六)/m);
-  const section = end === -1 ? rest : rest.slice(0, end + 1);
+  const m = body.match(/^##\s+[^\n]*(?:硬规则|Hard rules)[^\n]*$/m);
+  if (!m) return -1;
+  const rest = body.slice(m.index + m[0].length);
+  const end = rest.search(/^##\s/m);
+  const section = end === -1 ? rest : rest.slice(0, end);
   return (section.match(/^\d+\.\s+\*\*/gm) || []).length;
 }
 

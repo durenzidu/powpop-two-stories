@@ -3,6 +3,35 @@
 All notable changes to this skill are documented here. The version here must match `version:` in
 `skills/powpop-two-stories/SKILL.md` and in every file under `locales/`.
 
+## 1.2.0 — 2026-10-28
+
+New step: **who here reads most like you**. After the posts are on screen, the skill names the one
+row that is closest to the user's own writing — by comparing the text, never by guessing at people.
+
+**Added**
+
+- New section 4 (`谁跟你最「合拍」` / "Who here sounds most like you"), placed **before** the like
+  question so the recommendation can inform what the user wants to like, and so liking stays the
+  final action.
+- Five fixed comparison dimensions — subject, where the feeling lands, whether the writer is
+  present, time orientation, and how it is said. "Reads like you" means at least three of the five
+  line up; it is not a judgement about writing quality or length.
+- Fixed output shape: name exactly one row, **quote one line from each side** as evidence, and add
+  one "where they differ" line. No scores, no percentages, no ranking.
+- Four cases where the step is skipped instead of forced: only one post from someone else, the user
+  never posted (ask once for one line, and only analyse if they give it), all five are one-liners,
+  and nothing lines up on three dimensions.
+
+**Hard rules** 19–21 added: stay inside the rows already shown; quote both sides and state a
+difference; treat it as text-versus-text — no identity inference, no "you two would get along", and
+no following, DMing, or liking because of it.
+
+**Changed**
+
+- Section 2 heading no longer says "the other half" (last remnant of the retired metaphor).
+- `scripts/check-locales.mjs` now finds the hard-rules section by heading text instead of its
+  number, so renumbering sections no longer silently breaks the rule-count check.
+
 ## 1.1.1 — 2026-10-28
 
 Copy fix. The opening pitch was a metaphor ("写下你的那一半 … 两半放在一起") that readers could not

@@ -44,6 +44,10 @@ Risk: The skill asks the user to add a remote MCP server to their agent configur
 
 Mitigation: The address is provided for the user to add themselves. The skill writes that configuration only when the user explicitly asks it to, and only after showing the full diff and getting consent. It writes no local state at all and reads no other user file.
 
+Risk: The skill names one post as reading "most like you", which could be heard as a claim about the person who wrote it.
+
+Mitigation: It compares five fixed dimensions of the text only (subject, where the feeling lands, whether the writer is present, time orientation, how it is said), stays inside the posts already shown, quotes one line from each side, and states one difference. No scores or percentages, no inference about the author's identity or motives, and never a claim that the two would get along. It never follows, messages, or likes anyone on that basis — liking still requires a separate explicit answer.
+
 ## Reference(s):
 
 - [PowPop website](https://global.powpow.online)
@@ -53,7 +57,7 @@ Mitigation: The address is provided for the user to add themselves. The skill wr
 
 **Output Type(s):** [Text, Markdown, Guidance, API calls]
 
-**Output Format:** [Conversational Markdown: the user's own post quoted, followed by numbered quotations from other posts at the same place with dates and distances, then one question about liking]
+**Output Format:** [Conversational Markdown: the user's own post quoted, followed by numbered quotations from other posts at the same place with dates and distances, then one pick — the post that reads closest to the user's own, quoting one line from each side plus one stated difference — then one question about liking]
 
 **Output Parameters:** [1D]
 
@@ -61,7 +65,7 @@ Mitigation: The address is provided for the user to add themselves. The skill wr
 
 ## Skill Version(s):
 
-1.1.1 (Chinese canonical + English full text under `locales/en/`)
+1.2.0 (Chinese canonical + English full text under `locales/en/`)
 
 ## Ethical Considerations:
 

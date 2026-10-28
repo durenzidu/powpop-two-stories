@@ -2,7 +2,7 @@
 
 [![ClawHub](https://img.shields.io/badge/ClawHub-powpop--two--stories-ff6b6b)](https://clawhub.ai/skills/powpop-two-stories)
 [![License](https://img.shields.io/badge/license-MIT--0-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.1-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-green)](CHANGELOG.md)
 
 [中文](README.md) · **English**
 
@@ -32,6 +32,11 @@ same place, 3 posts from other people
 ③ 2026-09-18 · a bit further out (about 640 m)
 > "Someone else was sitting here today too. Didn't say a word."
 ```
+
+Then I point at one: **"of these, ② reads most like you"** — backed by one quoted line from each side, plus one line on where they differ.
+
+What gets compared is the text, on five dimensions: subject, where the feeling lands, whether the writer is present, whether it looks at now or back then, and how it's said. At least three must line up.
+**No guessing who wrote it, how old they are, or what they do; no "87% compatible" scores; and no following or DMing anyone because of it.**
 
 Then exactly one question:
 
